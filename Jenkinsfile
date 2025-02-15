@@ -3,15 +3,14 @@ pipeline {
     environment {
         TF_VERSION = '1.0.11'  // specify your Terraform version
         AWS_REGION = "ap-south-1"
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')  // Store AWS credentials in Jenkins credentials manager
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
         stage('IAM user aws configuring') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
-                ]) {
-                    sh """
+                script {
+                     sh """
                     echo "Configuring AWS CLI..."
                     aws configure set region $AWS_REGION
                     aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
