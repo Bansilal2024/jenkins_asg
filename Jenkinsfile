@@ -4,7 +4,7 @@ pipeline {
     }
     environment {
         TF_VERSION = '1.0.11'  // specify your Terraform version
-        AWS_REGION = ap-south-1
+        AWS_REGION = "ap-south-1"
         AWS_ACCESS_KEY_ID = credentials('aws-access-key')  // Store AWS credentials in Jenkins credentials manager
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
     }
