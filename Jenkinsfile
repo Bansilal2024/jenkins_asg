@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'docker-agent' // Specify your Jenkins slave label here
-    }
+    agent any
     environment {
         TF_VERSION = '1.0.11'  // specify your Terraform version
         AWS_REGION = "ap-south-1"
