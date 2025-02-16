@@ -1,5 +1,5 @@
 data "aws_s3_bucket" "logging_bucket" {
-  bucket = "eks-demo-bk"
+  bucket = "bansi-b3"
 }
 
 output "aws_s3_bucket_id"{
