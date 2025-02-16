@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         TF_VERSION = '1.0.11'  // specify your Terraform version
-        AWS_REGION = "ap-south-1"
+        AWS_REGION = "ap-southeast-1"
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')  // Store AWS credentials in Jenkins credentials manager
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
@@ -22,15 +22,13 @@ pipeline {
         stage('Initialize Terraform') {
             steps {
                 script {
-                    // Initialize Terraform (e.g., modules and providers)
                     sh 'terraform init'
                 }
             }
         }
-        stage('Terraform Plan') {
+        stage('Terraform Validate') {  // Changed the name from "Terraform Plan"
             steps {
                 script {
-                    // Run terraform plan to validate the configuration
                     sh 'terraform validate'
                 }
             }
@@ -38,8 +36,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 script {
-                    // Run terraform plan to validate the configuration
-                    sh 'terraform plan '
+                    sh 'terraform plan'
                 }
             }
         }
@@ -47,7 +44,6 @@ pipeline {
             steps {
                 input 'Approve the Apply?'  // Manual approval step before applying changes
                 script {
-                    // Apply the terraform configuration
                     sh 'terraform apply -auto-approve'
                 }
             }
@@ -55,7 +51,6 @@ pipeline {
         stage('Clean up') {
             steps {
                 script {
-                    // Clean up (if needed)
                     sh 'rm -rf .terraform* tfplan'
                 }
             }
@@ -63,7 +58,6 @@ pipeline {
     }
     post {
         always {
-            // Notify or take actions after the pipeline is done (e.g., cleanup)
             echo 'Pipeline finished.'
         }
     }
