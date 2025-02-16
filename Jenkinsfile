@@ -31,7 +31,15 @@ pipeline {
             steps {
                 script {
                     // Run terraform plan to validate the configuration
-                    sh 'terraform plan -out=tfplan'
+                    sh 'terraform validate'
+                }
+            }
+        }
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    // Run terraform plan to validate the configuration
+                    sh 'terraform plan '
                 }
             }
         }
@@ -40,7 +48,7 @@ pipeline {
                 input 'Approve the Apply?'  // Manual approval step before applying changes
                 script {
                     // Apply the terraform configuration
-                    sh 'terraform apply tfplan'
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
