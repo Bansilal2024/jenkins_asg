@@ -37,7 +37,7 @@ pipeline {
             steps {
                 input 'Approve the Apply?'  // Manual approval step before applying changes
                 script {
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform destroy -auto-approve'
                 }
             }
         }
