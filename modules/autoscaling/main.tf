@@ -25,7 +25,7 @@ resource "aws_security_group" "asg_sg" {
     name            = "ASLAWS-LT-ODIN-PROD-${var.name_suffix}"
     image_id                = var.v_ami
     vpc_security_group_ids  = [aws_security_group.asg_sg.id]
-    
+
     block_device_mappings {
       device_name = "/dev/sda1"
       ebs {
@@ -79,7 +79,7 @@ resource "aws_security_group" "asg_sg" {
         }
       }
     }
-    
+
     target_group_arns = var.target_group_arns
 
     health_check_type         = "ELB"
