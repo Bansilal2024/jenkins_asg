@@ -6,7 +6,7 @@ variable "vpc_id" {
 variable "v_subnet_ids" {
   description = "The subnet IDs where the EC2 instances will be launched"
   type        = list(string)
-  default     = ["subnet-0525f9ae4c5fcbe4d", "subnet-06c6b347264d4fa98"]  
+  default     = ["subnet-0525f9ae4c5fcbe4d", "subnet-06c6b347264d4fa98"]
 }
 variable "v_sg_ib" {
   description = "Security group inbound rules. Map of port to allowed IP ranges."
@@ -30,4 +30,4 @@ variable "v_tags" {
     ENV  = "PROD"
     APP  = "ODIN"
    }
-}  
+}
