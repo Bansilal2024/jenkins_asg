@@ -26,13 +26,6 @@ pipeline {
                 }
             }
         }
-        stage('Terraform Validate') {  // Changed the name from "Terraform Plan"
-            steps {
-                script {
-                    sh 'terraform validate'
-                }
-            }
-        }
         stage('Terraform Plan') {
             steps {
                 script {
