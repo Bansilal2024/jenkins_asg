@@ -37,6 +37,19 @@ module "nlb_target_group_1" {
     APP  = "ODIN"
    }
 }
+module "nlb_target_group_2" {
+  source            = "./modules/nlb_target_group"
+  vpc_id            = "vpc-0034d7cc8bed4c897"
+  name_suffix       = "ELASTIC-TG"
+  port              = 80
+  protocol          = "TCP"
+  health_check_protocol = "TCP"
+  v_tags                        = {
+    Name = "ASLAWS-ASG-ODIN-PROD_CDS"
+    ENV  = "PROD"
+    APP  = "ODIN"
+   }
+}
 
 
 module "nlb_listener_1" {
@@ -46,7 +59,13 @@ module "nlb_listener_1" {
   protocol          = "TCP"
   target_group_arn  = module.nlb_target_group_1.arn
 }
-
+module "nlb_listener_2" {
+  source            = "./modules/nlb_listener"
+  load_balancer_arn = module.nlb.arn
+  port              = 8080
+  protocol          = "TCP"
+  target_group_arn  = module.nlb_target_group_2.arn
+}
 
 
 resource "aws_iam_role" "ec2_role" {
@@ -94,5 +113,21 @@ module "asg_1" {
   v_min_capacity                = 1
   v_max_capacity                = 1
   target_group_arns             = [module.nlb_target_group_1.arn]
+  v_user_data_file              = "./1.sh"
+}
+module "asg_2" {
+  source                        = "./modules/autoscaling"
+  name_suffix                   = "ELASTIC"
+  name_prefix                   = "ELASTIC"
+  vpc_id                        = "vpc-0034d7cc8bed4c897"
+  v_subnet_ids                  = ["subnet-0ce6bce1ba5b30896", "subnet-005d8ca5ece26114e"]
+  v_ami                         = "ami-0672fd5b9210aa093"
+  #name_suffix                   = "ASG-1"
+  ec2_instance_profile_name     = aws_iam_instance_profile.ec2_instance_profile.name
+  v_key_name                    = "16feb"
+  v_desired_capacity            = 1
+  v_min_capacity                = 1
+  v_max_capacity                = 1
+  target_group_arns             = [module.nlb_target_group_2.arn]
   v_user_data_file              = "./1.sh"
 }
